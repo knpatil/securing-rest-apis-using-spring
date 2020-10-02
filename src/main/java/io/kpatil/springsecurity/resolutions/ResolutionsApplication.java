@@ -3,8 +3,13 @@ package io.kpatil.springsecurity.resolutions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 @SpringBootApplication
 public class ResolutionsApplication {
@@ -14,14 +19,14 @@ public class ResolutionsApplication {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                org.springframework.security.core.userdetails.User
-                        .withUsername("kpatil")
-                        .password("{bcrypt}$2y$12$SMCRDn5PeFp77.2f6Q16Ee66aHaKTQexKj0EoRkJi7CkBpXMjKWl.")
-                        .authorities("resolution:read")
-                        .build()
-        );
+    public UserDetailsService userDetailsService(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource) {
+            @Override
+            protected List<GrantedAuthority> loadUserAuthorities(String username) {
+                System.out.println("Loading user authorities ...");
+                return AuthorityUtils.createAuthorityList("resolution:read");
+            }
+        };
     }
 
 }
