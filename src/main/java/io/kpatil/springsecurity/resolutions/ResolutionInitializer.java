@@ -25,25 +25,29 @@ public class ResolutionInitializer implements SmartInitializingSingleton {
 
         System.out.println("Initializing user 'knpatil' ...");
 
-        User user = new User("knpatil",
-                "{bcrypt}$2a$10$jImZs8GVoSkZeJ2Wmh7UY" +
-                        ".6OrKNze//U3QwEIek4meWLgbPzKde36");
+        User user = new User("user",
+                "{bcrypt}$2a$10$MywQEqdZFNIYnx.Ro/VQ0ulanQAl34B5xVjK2I/SDZNVGS5tHQ08W");
         user.grantAuthority("resolution:read");
         user.grantAuthority("resolution:write");
         this.users.save(user);
 
-        User readonly = new User();
-        readonly.setId(UUID.randomUUID());
-        readonly.setUsername("readonly");
-        readonly.setPassword("{bcrypt}$2b$10$4O6iq2P44JRjHVfEcOIqz.08zNddVZr5TgrNZTNKELVC5PL3LvFhi");
-        readonly.grantAuthority("resolution:read");
-        this.users.save(readonly);
+        User hasread = new User();
+        hasread.setId(UUID.randomUUID());
+        hasread.setUsername("hasread");
+        hasread.setPassword("{bcrypt}$2a$10$MywQEqdZFNIYnx.Ro/VQ0ulanQAl34B5xVjK2I/SDZNVGS5tHQ08W");
+        hasread.grantAuthority("resolution:read");
+        this.users.save(hasread);
 
-        User writeonly = new User();
-        writeonly.setId(UUID.randomUUID());
-        writeonly.setUsername("writeonly");
-        writeonly.setPassword("{bcrypt}$2b$10$iJLQFbZMMsmRzOxABfN/AuL/zXEHjDlDsB4yW7gkQCGW22sw9tVN2");
-        writeonly.grantAuthority("resolution:write");
-        this.users.save(writeonly);
+        User haswrite = new User();
+        haswrite.setId(UUID.randomUUID());
+        haswrite.setUsername("haswrite");
+        haswrite.setPassword("{bcrypt}$2a$10$MywQEqdZFNIYnx.Ro/VQ0ulanQAl34B5xVjK2I/SDZNVGS5tHQ08W");
+        haswrite.grantAuthority("resolution:write");
+        this.users.save(haswrite);
+
+        User admin = new User("admin","{bcrypt}$2a$10$bTu5ilpT4YILX8dOWM/05efJnoSlX4ElNnjhNopL9aPoRyUgvXAYa");
+        admin.grantAuthority("ROLE_ADMIN");
+        this.users.save(admin);
+
     }
 }
